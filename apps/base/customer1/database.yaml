@@ -1,37 +1,27 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  # name: customer1-db
-  name: customer1-db2
+  name: customer1-db
 spec:
   instances: 3
 
-  # bootstrap:
-  #   initdb:
-  #     database: app
-  #     owner: app
-  #     secret:
-  #       name: customer1-db-credentials
-
+  # Fresh database. There is no prior backup to recover from, so we bootstrap
+  # with initdb. WAL archiving (below) + the ScheduledBackup populate the
+  # object store from now on; recovery is only for restoring an existing backup.
   bootstrap:
-    recovery:
+    initdb:
       database: app
       owner: app
-      source: source
       secret:
         name: customer1-db-credentials
 
-  externalClusters:
-    - name: source
-      plugin:
-        name: barman-cloud.cloudnative-pg.io
-        parameters:
-          barmanObjectName: customer1-objectstore
-          serverName: customer1-db
-
   storage:
     size: 1Gi
+    # Retain the underlying disk if the Cluster is ever deleted/renamed,
+    # so a GitOps prune cannot destroy the data.
+    storageClass: customer1-db-retain
 
+  # Continuous WAL archiving to the Azure blob object store.
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true

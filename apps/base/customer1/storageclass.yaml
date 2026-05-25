@@ -1,0 +1,12 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: customer1-db-retain
+provisioner: disk.csi.azure.com
+parameters:
+  skuName: StandardSSD_LRS
+# Keep the managed disk when the PVC/Cluster is removed, so a stray delete or
+# GitOps prune cannot destroy the database. Reclaim leftover disks manually.
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
