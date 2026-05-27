@@ -17,3 +17,10 @@ spec:
       interval: 12h
   install:
     createNamespace: true
+  # Enforce the operator replica count so it can't silently drift to 0
+  # (a scaled-to-0 operator leaves cnpg-webhook-service with no endpoints,
+  # blocking all new/changed CNPG Clusters while existing DBs keep running).
+  driftDetection:
+    mode: enabled
+  values:
+    replicaCount: 1
