@@ -6,6 +6,12 @@ data:
   N8N_PORT: "3008"
   N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "true"
   N8N_SECURE_COOKIE: "true"
+  # Behind Traefik (TLS terminates at the proxy): trust the proxy's
+  # X-Forwarded-Proto so n8n detects HTTPS and serves the secure cookie.
+  N8N_PROXY_HOPS: "1"
+  N8N_PROTOCOL: "https"
+  N8N_HOST: "crassus.mercury-prod.webmoov.org"
+  WEBHOOK_URL: "https://crassus.mercury-prod.webmoov.org/"
   DB_TYPE: "postgresdb"
   DB_POSTGRESDB_HOST: "crassus-db-rw.crassus.svc.cluster.local"
   DB_POSTGRESDB_PORT: "5432"
