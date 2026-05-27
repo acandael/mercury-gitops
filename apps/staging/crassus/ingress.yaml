@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: crassus-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - crassus.mercury-staging.webmoov.org
+      secretName: crassus-tls
+  rules:
+    - host: crassus.mercury-staging.webmoov.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: crassus-n8n
+                port:
+                  number: 3008

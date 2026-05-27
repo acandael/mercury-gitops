@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: brutus-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - brutus.mercury-staging.webmoov.org
+      secretName: brutus-tls
+  rules:
+    - host: brutus.mercury-staging.webmoov.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: brutus-n8n
+                port:
+                  number: 3008

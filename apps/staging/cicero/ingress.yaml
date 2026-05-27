@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cicero-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - cicero.mercury-staging.webmoov.org
+      secretName: cicero-tls
+  rules:
+    - host: cicero.mercury-staging.webmoov.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: cicero-n8n
+                port:
+                  number: 3008

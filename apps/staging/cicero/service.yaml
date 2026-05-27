@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cicero-n8n
+spec:
+  selector:
+    app: cicero-n8n
+  ports:
+    - port: 3008

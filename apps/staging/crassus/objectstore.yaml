@@ -1,0 +1,15 @@
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: crassus-objectstore
+spec:
+  configuration:
+    destinationPath: "https://mercurybackupsstaging.blob.core.windows.net/crassus"
+    azureCredentials:
+      storageAccount:
+        name: crassus-backup-creds
+        key: storage-account-name
+      storageSasToken:
+        name: crassus-backup-creds
+        key: crassus-blob-sas
+  retentionPolicy: "14d"

@@ -1,0 +1,15 @@
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: brutus-objectstore
+spec:
+  configuration:
+    destinationPath: "https://mercurybackupsstaging.blob.core.windows.net/brutus"
+    azureCredentials:
+      storageAccount:
+        name: brutus-backup-creds
+        key: storage-account-name
+      storageSasToken:
+        name: brutus-backup-creds
+        key: brutus-blob-sas
+  retentionPolicy: "14d"
